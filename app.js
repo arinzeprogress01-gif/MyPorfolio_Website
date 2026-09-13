@@ -15,6 +15,10 @@ try {
     if (process.env.NODE_ENV === "Development") {
         app.use(morgan("dev"));
     }
+    
+    app.get("/", (req, res) => {
+        res.status(200).send("Portfolio Backend is running smoothly.");
+    });
 
     app.get("/health", (req, res) => {
         res.status(200).json({
