@@ -12,12 +12,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
+          # ⚠️ Add this line to tell the cache runner where your lock file lives:
           cache-dependency-path: Portfolio_Backend/package-lock.json
+
 
       # ⚠️ Fixed: Added working directory constraints to matches layout
       - name: Install dependencies
