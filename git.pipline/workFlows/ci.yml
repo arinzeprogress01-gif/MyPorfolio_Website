@@ -3,7 +3,6 @@ name: Higgs Portfolio CI
 on:
   push:
     branches: [main]
-
   pull_request:
     branches: [main]
 
@@ -20,9 +19,14 @@ jobs:
         with:
           node-version: 24
           cache: npm
+          cache-dependency-path: Portfolio_Backend/package-lock.json
 
+      # ⚠️ Step into backend directory to install packages
       - name: Install dependencies
         run: npm ci
+        working-directory: Portfolio_Backend
 
+      # ⚠️ Step into backend directory to run tests
       - name: Run tests
         run: npm test
+        working-directory: Portfolio_Backend

@@ -17,18 +17,28 @@ jobs:
         with:
           node-version: 24
           cache: npm
+          cache-dependency-path: Portfolio_Backend/package-lock.json
 
+      # ⚠️ Fixed: Added working directory constraints to matches layout
       - name: Install dependencies
         run: npm ci
+        working-directory: Portfolio_Backend
 
+      # ⚠️ Fixed: Runs test suite from backend directory
       - name: Run tests
         run: npm test
+        working-directory: Portfolio_Backend
 
+      # ⚠️ Fixed: Runs linter from backend directory
       - name: Run ESLint
         run: npm run lint
+        working-directory: Portfolio_Backend
 
+      # ⚠️ Fixed: Runs security audit from backend directory
       - name: Run security audit
         run: npm audit --audit-level=high
+        working-directory: Portfolio_Backend
 
+      # ⚠️ Fixed: Swapped to -X GET because Render deploy hooks ignore POST requests
       - name: Deploy to Render
-        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+        run: curl -X GET "${{ secrets.RENDER_DEPLOY_HOOK }}"
