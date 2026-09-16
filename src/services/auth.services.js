@@ -18,7 +18,10 @@ import { hashPassword } from "../utils/Password.utils.js"
 import { generateToken } from "../utils/jwt.utils.js";
 
 
-export const registerMe = async (payload) => {
+export const registerMe = async (
+    UserId,
+    payload
+) => {
     const {
         Name,
         Email,
@@ -74,6 +77,7 @@ export const registerMe = async (payload) => {
     const hashedPassword = await hashPassword(Password);
 
     const user = await createMe({
+        UserId,
         Name,
         Email,
         Password: hashedPassword,
