@@ -5,7 +5,7 @@ import {
     NotFoundError
 } from "../errors/index.js"
 
-import {Me} from "../models/Me.model.js";
+import {Me} from "../models/me.model.js";
 
 export const authenticate = async (req, res, next) => {
 
