@@ -51,10 +51,31 @@ const mySchema = new mongoose.Schema({
         required: true,
         enum: ['male', 'female', 'others']
     },
+
+    DateOfBirth: {
+        type: Date,
+        required: true,
+    },
+
+    Address: {
+        Street : {
+            type: String
+        },
+        City: {
+            type: String
+        },
+        State: {
+            type: String
+        },
+        Country : {
+            type: String
+        },
+    },
+
 },
     {
         timestamps: true,
     }
 );
 
-export const Me = mongoose.model(" Me ", mySchema);
+export const Me = mongoose.models.Me || mongoose.model("Me", mySchema);

@@ -3,6 +3,8 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 
+import authRoutes from "./src/routes/auth.routes.js"
+
 const app = express()
 try {
     app.use(express.json());
@@ -26,6 +28,8 @@ try {
             message: "Portfolio API is healthy"
         });
     });
+
+    app.use("/auth", authRoutes)
 
     
 } catch (error) {
