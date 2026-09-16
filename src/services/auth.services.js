@@ -2,19 +2,19 @@ import {
     createMe,
     //getMyInfoById,
     findMeByEmail,
-    //findMeByEmailWithPassword,
+    findMeByEmailWithPassword,
     //updateMyPassword
 } from "../repositories/auth.repo.js"
 
 import { 
     BadRequestError,
     ConflictError,
-    //UnauthorizedError,
+    UnauthorizedError,
     //ForbiddenError,
     //NotFoundError
 } from "../errors/index.js"
 
-import { hashPassword } from "../utils/Password.utils.js"
+import { hashPassword , comparePassword} from "../utils/Password.utils.js"
 import { generateToken } from "../utils/jwt.utils.js";
 
 
@@ -113,6 +113,43 @@ export const registerMe = async (
             DateOfBirth : user.DateOfBirth,
 
         },
+        token,
+    };
+};
+
+
+export const loginMe = async (Email, Password) => {
+    
+    if (!Email) {
+        throw new BadRequestError("Email is required.");
+    }
+    if (!Password) {
+        throw new BadRequestError("Password is required.");
+    };
+
+    const user = await findMeByEmail(Email);
+    if (!user) {
+        throw new BadRequestError("User Doesn't Exist");
+    };
+
+    const checkUserPass = await findMeByEmailWithPassword(Email);
+    if (!checkUserPass) {
+        throw new BadRequestError("Invalid Email or Password");
+    };
+
+    const isPasswordValid = await comparePassword(Password, user.Password);
+    if (!isPasswordValid) {
+        throw new UnauthorizedError("Invalid password.");
+    }
+
+    const token = generateToken({
+        Id: user._id,
+        Email: user.Email,
+        Password: user.Password,
+    });
+
+    return {
+        user,
         token,
     };
 };
