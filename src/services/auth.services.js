@@ -19,7 +19,6 @@ import { generateToken } from "../utils/jwt.utils.js";
 
 
 export const registerMe = async (
-    UserId,
     payload
 ) => {
     const {
@@ -77,7 +76,6 @@ export const registerMe = async (
     const hashedPassword = await hashPassword(Password);
 
     const user = await createMe({
-        UserId,
         Name,
         Email,
         Password: hashedPassword,
@@ -94,14 +92,14 @@ export const registerMe = async (
     });
 
     const token = generateToken({
-        UserId: user.UserId,
+        Id: user._id,
         Email: user.Email,
         Password: user.Password,
     });
 
     return {
         user: {
-            UserId: user.UserId,
+            Id: user._id,
             Name: user.Name,
             Email: user.Email,
             Phone: user.Phone,

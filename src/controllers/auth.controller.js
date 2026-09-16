@@ -8,7 +8,6 @@ export const RegisterMe = async(
     try {
 
         const regData = await registerMe(
-            req.UserId,
             req.body
         );
 

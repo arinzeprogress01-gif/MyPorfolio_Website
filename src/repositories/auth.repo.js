@@ -5,7 +5,7 @@ export const createMe = async (userData) => {
 };
 
 export const getMyInfoById = async (UserId) => {
-    return await Me.findByOne(UserId).select("-Password");
+    return await Me.findById(UserId).select("-Password");
 };
 
 export const findMeByEmail = async (
