@@ -53,7 +53,7 @@ export const registerMe = async (payload) => {
         throw new BadRequestError("Provide your Gender");
     }
 
-    if (DateOfBirth) {
+    if (!DateOfBirth) {
         throw new BadRequestError("Date of birth is required");
     }
 
