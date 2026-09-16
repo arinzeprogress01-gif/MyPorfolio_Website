@@ -7,7 +7,10 @@ export const RegisterMe = async(
 ) => {
     try {
 
-        const regData = await registerMe (req.body);
+        const regData = await registerMe(
+            req.user._id,
+            req.body
+        );
 
         return res.status(201).json({
             success: true,
