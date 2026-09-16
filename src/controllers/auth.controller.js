@@ -8,7 +8,7 @@ export const RegisterMe = async(
     try {
 
         const regData = await registerMe(
-            req.user._id,
+            req.UserId,
             req.body
         );
 
