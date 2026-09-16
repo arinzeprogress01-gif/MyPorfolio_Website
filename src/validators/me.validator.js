@@ -18,7 +18,7 @@ export const meSchema = Joi.object({
 
             "female",
 
-            "prefer_not_to_say"
+            "others"
 
         )
 

@@ -90,14 +90,14 @@ export const registerMe = async (payload) => {
     });
 
     const token = generateToken({
-        id: user._id,
+        UserId: user.UserId,
         Email: user.Email,
         Password: user.Password,
     });
 
     return {
         user: {
-            id: user._id,
+            UserId: user.UserId,
             Name: user.Name,
             Email: user.Email,
             Phone: user.Phone,
