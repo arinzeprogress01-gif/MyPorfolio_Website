@@ -14,6 +14,8 @@ import {
     //NotFoundError
 } from "../errors/index.js"
 
+import {resetPasswordSchema} from "../validators/resetPassword.validator.js"
+
 import { hashPassword , comparePassword} from "../utils/Password.utils.js"
 import { generateToken } from "../utils/jwt.utils.js";
 
@@ -119,20 +121,18 @@ export const registerMe = async (
 
 
 export const loginMe = async (Email, Password) => {
-    
-    if (!Email) {
-        throw new BadRequestError("Email is required.");
-    }
-    if (!Password) {
-        throw new BadRequestError("Password is required.");
-    };
 
     const user = await findMeByEmail(Email);
     if (!user) {
         throw new BadRequestError("User Doesn't Exist");
     };
+    
+    if (!Email) {
+        throw new BadRequestError("Email is required.");
+    };
 
     const checkUserPass = await findMeByEmailWithPassword(Email);
+
     if (!checkUserPass) {
         throw new BadRequestError("Invalid Email or Password");
     };
@@ -153,3 +153,43 @@ export const loginMe = async (Email, Password) => {
         token,
     };
 };
+
+export const resetPassword = async (body) => {
+
+    const {
+        error, 
+        value
+    } = resetPasswordSchema.validate(body);
+
+    if (error) {
+        error.details[0].message;
+    };
+
+    const {
+        Email, 
+        newPassword,
+        confirmNewPassword
+    } = value;
+
+    const user = await findMeByEmail(Email);
+    if (!user) {
+        throw new UnauthorizedError("User Doesn't Exist");
+    }
+
+    if (newPassword != confirmNewPassword) {
+        throw new BadRequestError("Passwords do not match.");
+    };
+
+    const hashedPassword = await hashPassword(newPassword);
+
+
+    user.password = hashedPassword;
+
+    await user.save();
+
+    return {
+        user ,
+        message: "Password reset successful"
+    };
+
+}    

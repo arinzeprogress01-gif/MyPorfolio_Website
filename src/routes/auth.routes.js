@@ -2,8 +2,12 @@ import express from "express";
 
 import {
     RegisterMe,
-    LoginMe
- } from "../controllers/auth.controller.js"
+    LoginMe,
+    resetUserPassword,
+    logoutMe
+} from "../controllers/auth.controller.js"
+ 
+import { authenticate } from "../middlewares/auth.middleware.js"
 
 //import { authenticate } from "../middlewares/auth.middleware.js"
 
@@ -17,6 +21,16 @@ router.post(
 router.post(
     "/login",
     LoginMe,
-)
+);
 
+router.post(
+    "/reset-password",
+    resetUserPassword
+);
+
+router.post(
+    "/logout",
+    authenticate,
+    logoutMe
+);
 export default router;
