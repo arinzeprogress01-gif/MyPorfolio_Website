@@ -120,21 +120,25 @@ export const registerMe = async (
 };
 
 
-export const loginMe = async (Email, Password) => {
+export const loginMe = async (loginData) => {
 
-    const user = await findMeByEmail(Email);
-    if (!user) {
-        throw new BadRequestError("User Doesn't Exist");
-    };
+    const {
+        Email,
+        Password
+    } = loginData;
     
     if (!Email) {
         throw new BadRequestError("Email is required.");
     };
 
-    const checkUserPass = await findMeByEmailWithPassword(Email);
+    if (!Password) {
+        throw new BadRequestError("Password is required.");
+    }
 
-    if (!checkUserPass) {
-        throw new BadRequestError("Invalid Email or Password");
+    const user = await findMeByEmailWithPassword(Email);
+
+    if (!user) {
+        throw new UnauthorizedError ("user is non-existent");
     };
 
     const isPasswordValid = await comparePassword(Password, user.Password);
@@ -145,7 +149,6 @@ export const loginMe = async (Email, Password) => {
     const token = generateToken({
         Id: user._id,
         Email: user.Email,
-        Password: user.Password,
     });
 
     return {
@@ -171,7 +174,10 @@ export const resetPassword = async (body) => {
         confirmNewPassword
     } = value;
 
-    const user = await findMeByEmail(Email);
+    const user = await findMeByEmail(
+        Email,
+        true
+    );
     if (!user) {
         throw new UnauthorizedError("User Doesn't Exist");
     }

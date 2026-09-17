@@ -18,13 +18,13 @@ export const findMeByEmail = async (
 
 export const findMeByEmailWithPassword = async (
 
-    Email
+    emailString
 
 ) => {
 
     return await Me.findOne({
 
-        Email,
+        Email : emailString.lowercase().trim()
 
     }).select("+Password");
 
