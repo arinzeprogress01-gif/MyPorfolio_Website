@@ -172,7 +172,7 @@ export const loginMe = async (loginData) => {
 export const resetPassword = async (body) => {
 
     const {
-        error, 
+        error,
         value
     } = resetPasswordSchema.validate(body);
 
@@ -181,7 +181,7 @@ export const resetPassword = async (body) => {
     };
 
     const {
-        Email, 
+        Email,
         newPassword,
         confirmNewPassword
     } = value;
@@ -201,7 +201,7 @@ export const resetPassword = async (body) => {
     const hashedPassword = await hashPassword(newPassword);
 
 
-    user.password = hashedPassword;
+    user.Password = hashedPassword;
 
     await user.save();
 
@@ -211,4 +211,4 @@ export const resetPassword = async (body) => {
         message: "Password reset successful"
     };
 
-}    
+};    
