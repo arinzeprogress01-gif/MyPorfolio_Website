@@ -141,6 +141,10 @@ export const loginMe = async (loginData) => {
         throw new UnauthorizedError ("user is non-existent");
     };
 
+    if (!user.Password) {
+        throw new UnauthorizedError("Password is not set for this user.");
+    };
+
     const isPasswordValid = await comparePassword(Password, user.Password);
     if (!isPasswordValid) {
         throw new UnauthorizedError("Invalid password.");
@@ -151,10 +155,18 @@ export const loginMe = async (loginData) => {
         Email: user.Email,
     });
 
+    // 1. Convert the Mongoose document to a plain JavaScript object
+    const userObject = user.toObject();
+
+    delete userObject.Password;
+    // 2. Remove the password field from the object
+    
+    // 3. Return the sanitized data payload cleanly
     return {
-        user,
+        user: userObject,
         token,
     };
+
 };
 
 export const resetPassword = async (body) => {
@@ -194,7 +206,8 @@ export const resetPassword = async (body) => {
     await user.save();
 
     return {
-        user ,
+        Email: user.Email,
+        Address: user.Address,
         message: "Password reset successful"
     };
 
