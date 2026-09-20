@@ -1,9 +1,8 @@
 import {
     createMe,
-    //getMyInfoById,
     findMeByEmail,
     findMeByEmailWithPassword,
-    //updateMyPassword
+    updateMyPassword
 } from "../repositories/auth.repo.js"
 
 import { 
@@ -199,11 +198,12 @@ export const resetPassword = async (body) => {
     };
 
     const hashedPassword = await hashPassword(newPassword);
+    
+    await updateMyPassword (
+        user,
 
-
-    user.Password = hashedPassword;
-
-    await user.save();
+        hashedPassword
+    );
 
     return {
         Email: user.Email,

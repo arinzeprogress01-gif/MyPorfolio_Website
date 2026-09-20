@@ -1,0 +1,42 @@
+Phase 1: Authentication & Identity (The Shield)Before anyone can post their certificates or update a bio, your server must know exactly who they are.
+POST /api/v1/auth/register: Registers the profile owner.POST /api/v1/auth/login: Issues the secure httpOnly cookie token.
+
+POST /api/v1/auth/logout: Instructs the browser to clear the cookie context.Core Middleware (protectRoute): Extracts the cookie, validates the JWT payload, and populates req.user.id.
+
+Phase 2: Core Profile & Bio (The Anchor)This maps directly to the schema we brainstormed. Because a user only has one profile summary, you will use a clever "Upsert" logic here.
+
+GET /api/v1/profile: Publicly accessible. Frontend fetches this to build the "About Me" segment.
+
+POST /api/v1/profile: Protected route. Initializes the base profile data.
+
+PATCH /api/v1/profile: Protected route. Updates fields dynamically (e.g., changes Headline or adjusts a nested Education entry).
+💡 Architectural Tip: Instead of separate POST and PATCH paths, create a single POST/PUT /api/v1/profile endpoint that checks if a profile exists. If it does, update it; if not, create it. This simplifies frontend state tracking drastically.
+
+Phase 3: Dynamic Collections (The Heavy Lifters)Unlike the profile bio, these features are arrays of multiple entries. Each item requires its own unique database ID (_id) so it can be managed independently. ┌────────────────────────────────────────────────────────┐
+ │            /api/v1/projects  &  /api/v1/skills          │
+ ├────────────────────────────┬───────────────────────────┤
+ │     Public Actions         │    Protected Actions      │
+ ├────────────────────────────┼───────────────────────────┤
+ │  • GET / (List all)        │  • POST / (Add new item)  │
+ │  • GET /:id (View single)  │  • PATCH /:id (Edit item) │
+ │                            │  • DELETE /:id (Remove)   │
+ └────────────────────────────┴───────────────────────────┘
+
+1. Projects CategoryPOST /api/v1/projects: Adds a new project (Title, Description, RepoLink, LiveLink).
+PATCH /api/v1/projects/:id: Edits a specific project description or link.
+DELETE /api/v1/projects/:id: Safely drops an old project from the portfolio display.
+
+2. Skills CategoryPOST /api/v1/skills: Adds a skill node (e.g., Name: "Node.js", Category: "Backend", Proficiency: 90).PATCH /api/v1/skills/:id: Updates proficiency bars or categorization.
+
+3. Certificates & Awards Category POST /api/v1/certificates: Adds validation text strings, dates, and credential links.Phase 
+
+4: Media Uploads & Contact (The Bridges)Handling image assets for project thumbnails and setting up visitor contact bridges.
+POST /api/v1/projects/:id/image: Integrates an upload tool (like multer) combined with AWS S3 or Cloudinary storage pipelines to save layout images and write the file strings back to MongoDB.
+
+POST /api/v1/contact: Completely public endpoint. Visitors fill a form on your Vercel site (Name, Email, Message) which sends a notification or saves a record in a Messages database collection for you to view in an admin panel.
+
+Phase 5: Production & Gateway Hardening (The Launchpad)Preparing the engine to securely serve traffic between Render and Vercel.
+CORS Lockdown: Set up cors() rules in app.js to strictly allow incoming traffic from your Vercel frontend URL, blocking malicious external sites from making requests.
+
+--Security Header Padding: Configure helmet() policies to strip out standard server banners (like X-Powered-By: Express) so scripts can't target infrastructure specifics.
+--Rate Limiting: Add a basic rate-limiter wrapper (express-rate-limit) to your public /api/v1/contact route to prevent spam bots from overloading your database.
