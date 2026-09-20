@@ -56,13 +56,18 @@ export const myProfileSchema = Joi.object({
     )
     .default("Open to any"),
 
-    Courses: {
-        CourseName: Joi.string()
-            .required(),
-        Provider: Joi.string()
-            .required(),
-        CompletionYear: Joi.number()
-    
-    }
+    // Changed from a single object to an array of objects
+    Courses: Joi.array()
+        .items(
+            Joi.object({
+                CourseName: Joi.string()
+                    .required(),
+                Provider: Joi.string()
+                    .required(),
+                CompletionYear: Joi.number()
+            })
+        )
+        .default([]) // Defaults to an empty array if no courses are provided
+
 
 })
