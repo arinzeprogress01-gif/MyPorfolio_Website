@@ -23,7 +23,7 @@ export const createMyProfile = async (
     if (error) {
         throw new BadRequestError(error.details[0].message);
     };
-    
+
     const user = await getMyInfoById(UserId);
 
     if (!user) {
@@ -40,11 +40,13 @@ export const createMyProfile = async (
     const myPortId = await portfolioID();
 
     const profileData = {
-        UserId,
+        userId: UserId,
         portId : myPortId,
         ...value,
     };
 
-    return await createProfile(profileData);
+    return await createProfile(
+        profileData
+    );
 
 };

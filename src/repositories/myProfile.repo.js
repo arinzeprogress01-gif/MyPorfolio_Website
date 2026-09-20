@@ -2,9 +2,13 @@ import { Profile } from "../models/myProfile.model.js"
 import { Me } from "../models/me.model.js"
 
 
-export const createProfile = async (UserId, profileData) => {
+export const createProfile = async (profileData) => {
 
-    const user = await Me.findById(UserId);
+    const user = await Me.findById(profileData.userId);
+
+    if (!user) {
+        return null;
+    }
 
     const myProfile = await Profile.create(profileData);
 
