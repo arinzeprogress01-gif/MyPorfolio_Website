@@ -13,7 +13,7 @@ export const myProfile = async (
             req.user._id,
             req.body)
 
-        return res.status(204).json({
+        return res.status(201).json({
             success: true,
             
             message: " Profile created successfully",
