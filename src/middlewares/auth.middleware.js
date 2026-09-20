@@ -33,7 +33,7 @@ export const authenticate = async (req, res, next) => {
             process.env.jwt_sec
         );
 
-        const user = await Me.findById(decoded.id).select("-Password");
+        const user = await Me.findById(decoded._id).select("-Password");
 
         if (!user) {
 

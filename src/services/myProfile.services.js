@@ -22,15 +22,14 @@ export const createMyProfile = async (
 
     if (error) {
         throw new BadRequestError(error.details[0].message);
-    }
-
-    /*
+    };
+    
     const user = await getMyInfoById(UserId);
 
     if (!user) {
         throw new UnauthorizedError("User not found.");
     };
-    */
+    
 
     const userProfile = await findMyProfileByUserId(UserId);
 
