@@ -29,7 +29,7 @@ const EducationSchema = new mongoose.Schema({
 
 // 2. Core Basic Profile Schema
 const ProfileSchema = new mongoose.Schema({
-    UserId: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Me', 
         required: true,
