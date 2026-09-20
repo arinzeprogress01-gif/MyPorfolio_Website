@@ -27,7 +27,7 @@ export const getMyInfoById = async (UserId) => {
 export const findMyProfileByUserId = async (UserId) => {
     const myProfile =  await Profile.findOne(
         {
-            UserId
+            userId: UserId
         }
     );
 
