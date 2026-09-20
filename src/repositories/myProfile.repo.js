@@ -17,7 +17,7 @@ export const createProfile = async (UserId, profileData) => {
 
 
 export const getMyInfoById = async (UserId) => {
-    return await Profile.findById(UserId).select("-Password");
+    return await Me.findById(UserId).select("-Password");
 };
 
 export const findMyProfileByUserId = async (UserId) => {
