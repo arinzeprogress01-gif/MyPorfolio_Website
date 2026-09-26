@@ -49,3 +49,4 @@ export const verifyIncomingToken = (token) => {
         throw new UnauthorizedError("Session expired or token invalid. Access denied.");
     }
 };
+  
