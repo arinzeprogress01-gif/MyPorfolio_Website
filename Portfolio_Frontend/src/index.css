@@ -34,6 +34,11 @@
   --shadow-premium: 0 28px 70px color-mix(in oklab, var(--primary) 14%, transparent);
   --shadow-float: 0 18px 45px color-mix(in oklab, var(--primary) 18%, transparent);
   --shadow-accent: 0 12px 30px color-mix(in oklab, var(--accent) 25%, transparent);
+    --animate-float: float 6s ease-in-out infinite;
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+  }
 }
 
 :root {

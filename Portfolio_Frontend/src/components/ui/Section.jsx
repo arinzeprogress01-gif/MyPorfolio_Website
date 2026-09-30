@@ -4,6 +4,7 @@ const spacings = {
   sm: 'py-12 md:py-16',
   md: 'py-16 md:py-24',
   lg: 'py-20 md:py-32',
+  hero: 'pt-10 pb-16 md:pt-10 md:pb-20',
 }
 
 const tones = {
