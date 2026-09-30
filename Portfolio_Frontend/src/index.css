@@ -1,1 +1,93 @@
+
+
 @import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-body);
+  --font-display: var(--font-heading);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-bright: var(--accent-bright);
+  --color-highlight: var(--highlight);
+  --color-subtle: var(--subtle);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+}
+
+@theme {
+  --shadow-soft: 0 10px 32px color-mix(in oklab, var(--primary) 7%, transparent);
+  --shadow-premium: 0 28px 70px color-mix(in oklab, var(--primary) 14%, transparent);
+  --shadow-float: 0 18px 45px color-mix(in oklab, var(--primary) 18%, transparent);
+  --shadow-accent: 0 12px 30px color-mix(in oklab, var(--accent) 25%, transparent);
+    --animate-float: float 6s ease-in-out infinite;
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+  }
+}
+
+:root {
+  --radius: 0.7rem;
+  --font-heading: "Sora", sans-serif;
+  --font-body: "Manrope", sans-serif;
+  --background: oklch(0.995 0.002 255);
+  --foreground: oklch(0.23 0.07 257);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.23 0.07 257);
+  --primary: oklch(0.27 0.09 258);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.96 0.02 255);
+  --muted: oklch(0.97 0.01 255);
+  --muted-foreground: oklch(0.5 0.04 257);
+  --accent: oklch(0.58 0.22 264);
+  --accent-foreground: oklch(1 0 0);
+  --accent-soft: oklch(0.95 0.035 263);
+  --accent-bright: oklch(0.75 0.15 254);
+  --highlight: oklch(0.86 0.075 80);
+  --subtle: oklch(0.975 0.012 257);
+  --border: oklch(0.91 0.02 258);
+  --ring: oklch(0.58 0.22 264);
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--color-background); color: var(--color-foreground); font-family: var(--font-body); }
+  h1, h2, h3, h4 { font-family: var(--font-heading); }
+  ::selection { background: var(--accent-soft); color: var(--foreground); }
+}
+
+@utility eyebrow {
+  color: var(--accent);
+  font-size: 0.625rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Glow behind the hero (we'll use it next session) */
+.hero-halo {
+  position: absolute; top: -10rem; right: -7rem;
+  width: min(66vw, 58rem); height: 52rem; border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-soft) 0%, color-mix(in oklab, var(--accent-soft) 46%, transparent) 48%, transparent 72%);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
