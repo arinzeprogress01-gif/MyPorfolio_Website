@@ -1,9 +1,24 @@
+import { useState } from 'react'
+
 export default function ProfileCard({ data }) {
+  const [imageFailed, setImageFailed] = useState(false)
+  const showImage = data.image && !imageFailed
+
   return (
     <>
-      <span className="flex size-14 items-center justify-center rounded-full bg-highlight font-display text-lg font-bold text-primary">
-        {data.initials}
-      </span>
+      {showImage ? (
+        <img
+          src={data.image}
+          alt={data.imageAlt}
+          loading="lazy"
+          onError={() => setImageFailed(true)}
+          className="size-16 rounded-full object-cover object-top ring-2 ring-highlight"
+        />
+      ) : (
+        <span className="flex size-16 items-center justify-center rounded-full bg-highlight font-display text-lg font-bold text-primary">
+          {data.initials}
+        </span>
+      )}
 
       <h3 className="mt-4 font-display text-xl font-bold text-primary">{data.name}</h3>
       <p className="text-xs text-muted-foreground">{data.role}</p>

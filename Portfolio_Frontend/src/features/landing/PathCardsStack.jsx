@@ -65,14 +65,14 @@ export default function PathCardsStack() {
                 transform: `translate(calc(${slot.side} * var(--side) * 1% + ${spreadX}%), ${slot.y}%) rotate(${slot.rotate + spreadRotate}deg) scale(${slot.scale})`,
               }}
             >
-              <article
-                className={cn(
-                  'relative h-full animate-float rounded-3xl p-5 transition-shadow duration-700 motion-reduce:animate-none sm:p-6',
-                  tones[card.tone],
-                  isFront ? 'shadow-premium' : 'shadow-float'
-                )}
-                style={{ animationDelay: `${-index * 2}s` }}
-              >
+             <article
+  className={cn(
+    'relative h-full animate-float rounded-3xl p-5 transition-shadow duration-700 motion-reduce:animate-none sm:p-6',
+    tones[card.tone],
+    isFront ? 'shadow-premium' : 'shadow-float'
+  )}
+  style={{ animationPlayState: isFront ? 'running' : 'paused' }}
+>
                 <card.Content data={card.data} />
 
                 {!isFront && (

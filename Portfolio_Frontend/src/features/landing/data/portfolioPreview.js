@@ -1,6 +1,17 @@
+
+
+const firstMatch = (files) => Object.values(files)[0] ?? null
+
+const profileImage = firstMatch(
+  import.meta.glob('../../../assets/daniel-kalu.*', { eager: true, import: 'default' })
+)
+const projectImage = firstMatch(
+  import.meta.glob('../../../assets/akpaka-eco-district.*', { eager: true, import: 'default' })
+)
 export const portfolioPreview = {
   profile: {
-    initials: 'DK',
+    image: profileImage,
+    imageAlt: 'Portrait of Daniel Kalu',
     name: 'Daniel Kalu',
     role: 'Structural Engineer',
     summary: 'Designing safer, smarter structures for growing cities.',
@@ -14,12 +25,13 @@ export const portfolioPreview = {
   project: {
     label: 'Featured project',
     title: 'Akpaka Eco-District',
-    image: null, // later: import a picture from src/assets and put it here
+    image: projectImage,
+    imageAlt: 'Residential tower with green terraces and plants on every balcony',
     challenge: 'Reducing carbon footprint of urban housing.',
     solution: 'Integrated green infrastructure.',
     cta: 'Case study',
-    footerTitle: 'Creative work.',
-    footerText: 'Ideas made visible.',
+    // footerTitle: 'Creative work.',
+    // footerText: 'Ideas made visible.',
   },
   credentials: {
     title: 'Credentials',

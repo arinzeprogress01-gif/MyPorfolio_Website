@@ -1,15 +1,24 @@
+import { useState } from 'react'
 import { ArrowRight, Building2 } from 'lucide-react'
 
 export default function ProjectCard({ data }) {
+  const [imageFailed, setImageFailed] = useState(false)
+  const showImage = data.image && !imageFailed
+
   return (
     <div className="flex h-full flex-col">
       <p className="text-xs text-primary-foreground/70">{data.label}</p>
       <h3 className="mt-1 font-display text-lg font-bold">{data.title}</h3>
 
-      {/* Picture area: shows the image if you add one, otherwise an icon */}
       <div className="mt-4 flex aspect-4/3 items-center justify-center overflow-hidden rounded-2xl bg-white/10">
-        {data.image ? (
-          <img src={data.image} alt={data.title} className="h-full w-full object-cover" />
+        {showImage ? (
+          <img
+            src={data.image}
+            alt={data.imageAlt}
+            loading="lazy"
+            onError={() => setImageFailed(true)}
+            className="h-full w-full object-cover object-center"
+          />
         ) : (
           <Building2 size={40} strokeWidth={1.5} className="text-primary-foreground/70" aria-hidden="true" />
         )}
