@@ -1,24 +1,38 @@
 import { useEffect, useState } from 'react'
 import { cn } from '../../lib/cn'
 import usePrefersReducedMotion from '../../hooks/usePrefersReducedMotion'
-import { pathCards } from './data/pathCards'
+import { portfolioPreview } from './data/portfolioPreview'
+import ProfileCard from './pathCards/ProfileCard'
+import CredentialsCard from './pathCards/CredentialsCard'
+import ProjectCard from './pathCards/ProjectCard'
 
-const ROTATE_EVERY = 4500 // milliseconds
+const ROTATE_EVERY = 5500 // milliseconds
 
-// Where a card sits depending on its turn: front, behind-right, behind-left
+// Order matters: first = front, second = behind-right, third = behind-left
+const cards = [
+  { id: 'profile', label: "Daniel's profile", tone: 'light', Content: ProfileCard, data: portfolioPreview.profile },
+  { id: 'credentials', label: "Daniel's credentials", tone: 'light', Content: CredentialsCard, data: portfolioPreview.credentials },
+  { id: 'project', label: "Daniel's featured project", tone: 'dark', Content: ProjectCard, data: portfolioPreview.project },
+]
+
+const tones = {
+  light: 'border border-border bg-card text-card-foreground',
+  dark: 'bg-primary text-primary-foreground',
+}
+
+// side: -1 = left, 0 = front, 1 = right
 const slots = [
-  { x: 0, y: 0, rotate: 0, scale: 1, z: 30 },
-  { x: 32, y: 6, rotate: 6, scale: 0.9, z: 20 },
-  { x: -32, y: 6, rotate: -6, scale: 0.9, z: 10 },
+  { side: 0, y: 0, rotate: 0, scale: 1, z: 30 },
+  { side: 1, y: 3, rotate: 5, scale: 0.9, z: 20 },
+  { side: -1, y: 3, rotate: -5, scale: 0.9, z: 10 },
 ]
 
 export default function PathCardsStack() {
   const [active, setActive] = useState(0)
   const [engaged, setEngaged] = useState(false) // true while hovering or focusing
   const reducedMotion = usePrefersReducedMotion()
-  const count = pathCards.length
+  const count = cards.length
 
-  // Every few seconds, bring the next card to the front
   useEffect(() => {
     if (engaged || reducedMotion) return
     const timer = setTimeout(() => setActive((current) => (current + 1) % count), ROTATE_EVERY)
@@ -33,64 +47,39 @@ export default function PathCardsStack() {
       onFocus={() => setEngaged(true)}
       onBlur={() => setEngaged(false)}
     >
-      <div className="relative h-[26rem] overflow-x-clip sm:h-[28rem]">
-        {pathCards.map((card, index) => {
+      {/* All cards share one grid cell, so the height follows the tallest card */}
+      <div className="grid grid-cols-1 py-6 [--side:30] sm:[--side:38]">
+        {cards.map((card, index) => {
           const position = (index - active + count) % count // 0 = front
           const slot = slots[position]
           const isFront = position === 0
-          const side = Math.sign(slot.x) // -1 left, 0 front, 1 right
-          const spreadX = engaged ? side * 8 : 0
-          const spreadRotate = engaged ? side * 2 : 0
+          const spreadX = engaged ? slot.side * 8 : 0
+          const spreadRotate = engaged ? slot.side * 2 : 0
 
           return (
             <div
               key={card.id}
-              className="absolute left-[14%] top-0 w-[72%] transition-transform duration-700 ease-out motion-reduce:transition-none sm:left-[18%] sm:w-[64%]"
+              className="col-start-1 row-start-1 w-[64%] justify-self-center transition-transform duration-700 ease-out motion-reduce:transition-none sm:w-[56%]"
               style={{
                 zIndex: slot.z,
-                transform: `translate(${slot.x + spreadX}%, ${slot.y}%) rotate(${slot.rotate + spreadRotate}deg) scale(${slot.scale})`,
+                transform: `translate(calc(${slot.side} * var(--side) * 1% + ${spreadX}%), ${slot.y}%) rotate(${slot.rotate + spreadRotate}deg) scale(${slot.scale})`,
               }}
             >
               <article
                 className={cn(
-                  'relative animate-float rounded-3xl border border-border bg-card p-5 transition-shadow duration-700 motion-reduce:animate-none sm:p-6',
-                  isFront ? 'shadow-premium' : 'shadow-soft'
+                  'relative h-full animate-float rounded-3xl p-5 transition-shadow duration-700 motion-reduce:animate-none sm:p-6',
+                  tones[card.tone],
+                  isFront ? 'shadow-premium' : 'shadow-float'
                 )}
                 style={{ animationDelay: `${-index * 2}s` }}
               >
-                <span
-                  className={cn(
-                    'flex size-14 items-center justify-center rounded-full font-display text-lg font-bold',
-                    card.badge
-                  )}
-                >
-                  {card.initials}
-                </span>
+                <card.Content data={card.data} />
 
-                <h3 className="mt-4 font-display text-xl font-bold text-primary">{card.name}</h3>
-                <p className="text-xs text-muted-foreground">{card.role}</p>
-
-                <hr className="my-4 border-border" />
-
-                <p className="text-xs leading-relaxed text-muted-foreground">{card.summary}</p>
-
-                <dl className="mt-5 grid grid-cols-3 text-center">
-                  {card.stats.map(({ value, label }) => (
-                    <div key={label}>
-                      <dd className="font-display text-lg font-bold text-foreground">{value}</dd>
-                      <dt className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
-                        {label}
-                      </dt>
-                    </div>
-                  ))}
-                </dl>
-
-                {/* Clicking a card at the back brings it to the front */}
                 {!isFront && (
                   <button
                     type="button"
                     onClick={() => setActive(index)}
-                    aria-label={`Show ${card.name}'s portfolio card`}
+                    aria-label={`Show ${card.label}`}
                     className="absolute inset-0 z-10 cursor-pointer rounded-3xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                   />
                 )}
@@ -100,14 +89,13 @@ export default function PathCardsStack() {
         })}
       </div>
 
-      {/* Dots: show which card is in front, and let people jump to one */}
-      <div className="mt-6 flex justify-center gap-2" role="group" aria-label="Choose a portfolio card">
-        {pathCards.map((card, index) => (
+      <div className="mt-4 flex justify-center gap-2" role="group" aria-label="Choose a portfolio card">
+        {cards.map((card, index) => (
           <button
             key={card.id}
             type="button"
             onClick={() => setActive(index)}
-            aria-label={`Show ${card.name}`}
+            aria-label={`Show ${card.label}`}
             aria-current={index === active}
             className={cn(
               'h-2 rounded-full transition-all duration-300',

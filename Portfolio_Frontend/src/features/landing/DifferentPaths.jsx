@@ -6,7 +6,7 @@ import PathCardsStack from './PathCardsStack'
 
 export default function DifferentPaths() {
   return (
-    <Section id="example" spacing="md" tone="subtle">
+   <Section id="example" spacing="md" tone="subtle" className="overflow-x-clip">
       <Container size="xl">
         <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-10">
           {/* Left: text */}
@@ -17,7 +17,7 @@ export default function DifferentPaths() {
             </h2>
             <p className="mt-6 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg">
               Whether you build, teach, create, write, research, advise, or lead,
-              PROVEN gives your work the context it deserves.
+              FolioX gives your work the context it deserves.
             </p>
             <Button as="a" href="#start" variant="primary" size="lg" className="mt-8">
               Create your portfolio
