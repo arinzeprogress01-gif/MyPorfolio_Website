@@ -5,7 +5,7 @@ import {
 
 export const verifyOtpSchema = Joi.object({
 
-    email: Joi.string()
+    Email: Joi.string()
 
         .pattern(emailRegex)
 
