@@ -453,7 +453,7 @@ export const resetPassword = async (
 
     const hashedPassword =
 
-        hashPassword(
+        await hashPassword(
 
             newPassword
 
