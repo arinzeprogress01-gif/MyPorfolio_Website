@@ -35,6 +35,17 @@ export const meSchema = Joi.object({
         
         Country: Joi.string().trim().required(),
 
+    },
+
+    passwordReset: {    
+        otpHash: Joi.string().required(),
+
+        expiredAt: Joi.date().default(""),
+
+        verified: Joi.boolean().default(false),
+
+        createdAt: Joi.date().default(""),
+
     }
 
 });          
