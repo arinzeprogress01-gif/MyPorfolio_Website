@@ -215,14 +215,9 @@ export const forgotPassword = async (
 
     if (!user) {
 
-        return {
+        throw new UnauthorizedError("If an account exists, an OTP has been sent.")
 
-            message:
-                "If an account exists, an OTP has been sent.",
-
-        };
-
-    }
+    };
 
     const otp = generateOTP();
 
@@ -261,7 +256,7 @@ export const forgotPassword = async (
 
     return {
 
-        otp,
+        otp: otp,
 
         message:
             "If an account exists, an OTP has been sent.",
