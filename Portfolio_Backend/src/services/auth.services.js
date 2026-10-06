@@ -221,7 +221,7 @@ export const forgotPassword = async (
 
     const otp = generateOTP();
 
-    const otpHash = hashOtp(
+    const otpHash = await hashOtp(
 
         otp
 
@@ -315,7 +315,7 @@ export const verifyOtp = async (
 
     const valid =
 
-        compareOtp(
+        await compareOtp(
 
             otp,
 
@@ -404,7 +404,7 @@ export const resetPassword = async (
     const {
 
         newPassword,
-        comfirmNewPassword
+        confirmNewPassword
 
     } = value;
 
@@ -433,7 +433,7 @@ export const resetPassword = async (
 
     };
 
-    if (newPassword !== comfirmNewPassword) {
+    if (newPassword !== confirmNewPassword) {
         throw new BadRequestError("Passwords do not match")
     }
 
