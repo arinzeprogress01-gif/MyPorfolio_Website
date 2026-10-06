@@ -21,12 +21,12 @@ jobs:
           node-version: 24
           cache: npm
           # ⚠️ Add this line to tell the cache runner where your lock file lives:
-          cache-dependency-path: Portfolio_backend/package-lock.json
+          cache-dependency-path: Portfolio_Backend/package-lock.json
 
       - name: Install dependencies
         run: npm ci
-        working-directory: Portfolio_backend
+        working-directory: Portfolio_Backend
 
       - name: Run ESLint
         run: npm run lint
-        working-directory: Portfolio_backend
+        working-directory: Portfolio_Backend

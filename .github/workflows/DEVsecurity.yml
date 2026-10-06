@@ -23,8 +23,8 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-        working-directory: Portfolio_backend
+        working-directory: Portfolio_Backend
 
       - name: Run security checks
         run: npm audit --audit-level=high
-        working-directory: Portfolio_backend
+        working-directory: Portfolio_Backend
