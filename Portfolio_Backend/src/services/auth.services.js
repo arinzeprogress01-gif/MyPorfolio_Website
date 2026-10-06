@@ -2,7 +2,10 @@ import {
     createMe,
     findMeByEmail,
     findMeByEmailWithPassword,
-    updateMyPassword
+    updateMyPassword,
+    updatePasswordReset,
+    markPasswordResetVerified,
+    clearPasswordReset
 } from "../repositories/auth.repo.js"
 
 import { 
@@ -13,10 +16,17 @@ import {
     //NotFoundError
 } from "../errors/index.js"
 
-import {resetPasswordSchema} from "../validators/resetPassword.validator.js"
+import {forgotPasswordSchema} from "../validators/forgotPassword.validator.js"
+import {verifyOtpSchema} from "../validators/verifyOtp.js"
+import { resetPasswordSchema } from "../validators/resetPassword.js"
 
 import { hashPassword , comparePassword} from "../utils/Password.utils.js"
 import { generateToken } from "../utils/jwt.utils.js";
+import {generateOTP} from "../utils/generateOtp.js"
+import {
+    hashOtp, 
+    compareOtp
+} from "../utils/hashOtp.js"
 
 
 export const registerMe = async (
@@ -168,47 +178,313 @@ export const loginMe = async (loginData) => {
 
 };
 
-export const resetPassword = async (body) => {
+export const forgotPassword = async (
 
-    const {
-        error,
-        value
-    } = resetPasswordSchema.validate(body);
+    body
+
+) => {
+
+    const { error, value } =
+
+        forgotPasswordSchema.validate(body);
 
     if (error) {
-        error.details[0].message;
+
+        throw new BadRequestError(
+
+            error.details[0].message
+
+        );
+
+    }
+
+    const { Email } = value;
+
+    const user = await findMeByEmail(
+
+        Email,
+
+        true
+
+    );
+
+    /*
+        Do not reveal whether
+        the email exists.
+    */
+
+    if (!user) {
+
+        return {
+
+            message:
+                "If an account exists, an OTP has been sent.",
+
+        };
+
+    }
+
+    const otp = generateOTP();
+
+    const otpHash = hashOtp(
+
+        otp
+
+    );
+
+    await updatePasswordReset(
+
+        user,
+
+        {
+
+            otpHash,
+
+            expiresAt:
+
+                new Date(
+
+                    Date.now() +
+
+                    5 * 60 * 1000
+
+                ),
+
+            verified: false,
+
+            createdAt: new Date(),
+
+        }
+
+    );
+
+
+    return {
+
+        otp,
+
+        message:
+            "If an account exists, an OTP has been sent.",
+
     };
 
+};
+
+export const verifyOtp = async (
+
+    body
+
+) => {
+
+    const { error, value } =
+
+        verifyOtpSchema.validate(body);
+
+    if (error) {
+
+        throw new BadRequestError(
+
+            error.details[0].message
+
+        );
+
+    }
+
     const {
+
         Email,
-        newPassword,
-        confirmNewPassword
+
+        otp,
+
     } = value;
+
+    const user =
+
+        await findMeByEmail(
+
+            Email,
+
+            true
+
+        );
+
+    if (!user) {
+
+        throw new UnauthorizedError(
+
+            "Invalid OTP."
+
+        );
+
+    }
+
+    const valid =
+
+        compareOtp(
+
+            otp,
+
+            user.passwordReset.otpHash
+
+
+        );
+
+    if (!valid) {
+
+        throw new UnauthorizedError(
+
+            "Invalid OTP."
+
+        );
+
+    };
+
+    if (
+
+        !user.passwordReset.otpHash
+
+    ) {
+
+        throw new UnauthorizedError(
+
+            "OTP has not been generated."
+
+        );
+
+    }
+
+    if (
+
+        user.passwordReset.expiresAt <
+
+        new Date()
+
+    ) {
+
+        throw new UnauthorizedError(
+
+            "OTP has expired."
+
+        );
+
+    }
+
+
+    await markPasswordResetVerified(
+
+        user
+
+    );
+
+    return {
+
+        message: "OTP verified successfully.",
+
+        Email: user.Email,
+
+    };
+
+};
+
+export const resetPassword = async (
+
+    body
+
+) => {
+
+    const { error, value } =
+
+        resetPasswordSchema.validate(body);
+
+    if (error) {
+
+        throw new BadRequestError(
+
+            error.details[0].message
+
+        );
+
+    }
+
+    const {
+
+        newPassword,
+        comfirmNewPassword
+
+    } = value;
+
+    const Email = body.Email;
+
+    if (!Email) {
+
+        throw new UnauthorizedError(
+            "Reset session expired."
+        );
+
+    }
 
     const user = await findMeByEmail(
         Email,
         true
     );
-    if (!user) {
-        throw new UnauthorizedError("User Doesn't Exist");
-    }
 
-    if (newPassword != confirmNewPassword) {
-        throw new BadRequestError("Passwords do not match.");
+    if (!user) {
+
+        throw new UnauthorizedError(
+
+            "Invalid request."
+
+        );
+
     };
 
-    const hashedPassword = await hashPassword(newPassword);
-    
-    await updateMyPassword (
+    if (newPassword !== comfirmNewPassword) {
+        throw new BadRequestError("Passwords do not match")
+    }
+
+    if (
+
+        !user.passwordReset.verified
+
+    ) {
+
+        throw new UnauthorizedError(
+
+            "OTP verification is required."
+
+        );
+
+    }
+
+    const hashedPassword =
+
+        hashPassword(
+
+            newPassword
+
+        );
+
+    await updateMyPassword(
+
         user,
 
         hashedPassword
+
     );
 
+    await clearPasswordReset(
+
+        user
+
+    );
+
+
     return {
-        Email: user.Email,
-        Address: user.Address,
-        message: "Password reset successful"
+
+        message:
+
+            "Password reset successfully.",
+
     };
 
-};    
+};

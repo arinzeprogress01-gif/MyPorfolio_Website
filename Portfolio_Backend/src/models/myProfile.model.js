@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+/*
 // 1. Nested Education Sub-Schema to keep things modular
 const EducationSchema = new mongoose.Schema({
     SchoolName: { 
@@ -26,7 +27,7 @@ const EducationSchema = new mongoose.Schema({
         default: false 
     }
 }, { _id: true }); // Keep _id true so specific education blocks can be edited/deleted later
-
+*/
 // 2. Core Basic Profile Schema
 const ProfileSchema = new mongoose.Schema({
     userId: {
@@ -78,8 +79,9 @@ const ProfileSchema = new mongoose.Schema({
         default: "Open to any"
     },
     
+    
     // Arrays for nested structures
-    Education: [EducationSchema],
+    //Education: [EducationSchema],
     
     Courses: [{
         CourseName: {

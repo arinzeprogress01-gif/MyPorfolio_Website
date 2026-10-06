@@ -1,6 +1,8 @@
 import {
     registerMe,
     loginMe,
+    forgotPassword,
+    verifyOtp,
     resetPassword,
  } from "../services/auth.services.js";
 
@@ -43,6 +45,70 @@ export const LoginMe = async (
     } catch (error) {
         next(error);
     }
+};
+
+export const forgotUserPassword = async (
+
+    req,
+
+    res,
+
+    next
+
+) => {
+
+    try {
+
+        const result =
+
+            await forgotPassword(
+
+                req.body
+
+            );
+
+        res.status(200).json(result);
+
+    }
+
+    catch (error) {
+
+        next(error);
+
+    }
+
+};
+
+export const verifyUserOtp = async (
+
+    req,
+
+    res,
+
+    next
+
+) => {
+
+    try {
+
+        const result =
+
+            await verifyOtp(
+
+                req.body
+
+            );
+
+        res.status(200).json(result);
+
+    }
+
+    catch (error) {
+
+        next(error);
+
+    }
+
 };
 
 export const resetUserPassword = async (

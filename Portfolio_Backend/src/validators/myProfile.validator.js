@@ -1,6 +1,7 @@
 import Joi from "joi"
 
 export const myProfileSchema = Joi.object({
+    /*
     SchoolName: Joi.string()
         .trim()
         .required(),
@@ -22,6 +23,7 @@ export const myProfileSchema = Joi.object({
         then: Joi.date().allow(null),
         otherwise: Joi.date().required()
     }),
+    */
     
     Headline: Joi.string()
         .required()

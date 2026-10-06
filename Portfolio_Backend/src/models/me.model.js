@@ -64,6 +64,42 @@ const mySchema = new mongoose.Schema({
         },
     },
 
+    passwordReset: {
+
+        otpHash: {
+
+            type: String,
+
+            default: null,
+
+        },
+
+        expiresAt: {
+
+            type: Date,
+
+            default: null,
+
+        },
+
+        verified: {
+
+            type: Boolean,
+
+            default: false,
+
+        },
+
+        createdAt: {
+
+            type: Date,
+
+            default: null,
+
+        },
+
+    },
+
 },
     {
         timestamps: true,

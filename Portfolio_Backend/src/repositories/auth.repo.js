@@ -41,3 +41,57 @@ export const updateMyPassword = async (
     await user.save();
 
 };
+
+export const updatePasswordReset = async (
+
+    user,
+
+    passwordReset
+
+) => {
+
+    user.passwordReset = passwordReset;
+
+    await user.save();
+
+    return user;
+
+};
+
+export const clearPasswordReset = async (
+
+    user
+
+) => {
+
+    user.passwordReset = {
+
+        otpHash: null,
+
+        expiresAt: null,
+
+        verified: false,
+
+        createdAt: null,
+
+    };
+
+    await user.save();
+
+    return user;
+
+};
+
+export const markPasswordResetVerified = async (
+
+    user
+
+) => {
+
+    user.passwordReset.verified = true;
+
+    await user.save();
+
+    return user;
+
+};
