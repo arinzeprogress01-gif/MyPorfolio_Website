@@ -9,7 +9,7 @@ node_modules
 # Git
 .git
 .gitignore
-.github
+
 
 # IDE / editor
 .vscode
@@ -32,8 +32,6 @@ coverage
 # Local uploads / generated files
 uploads
 
-# Docker files
-.dockerignore
 
 # Temporary files
 tmp
