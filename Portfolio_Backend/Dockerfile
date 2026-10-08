@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm ci --omit=dev
+RUN npm ci
 
 
 FROM node:24-alpine AS runner
@@ -17,6 +17,6 @@ COPY --from=dependencies /app/node_modules ./node_modules
 
 COPY . .
 
-EXPOSE 10000
+EXPOSE 8080
 
-CMD ["npm", "start"]
+CMD ["npm", "server.js"]
