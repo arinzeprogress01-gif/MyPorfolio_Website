@@ -17,6 +17,6 @@ COPY --from=dependencies /app/node_modules ./node_modules
 
 COPY . .
 
-EXPOSE 8080
+EXPOSE 10000
 
 CMD ["npm", "start"]
