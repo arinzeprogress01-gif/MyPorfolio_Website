@@ -41,7 +41,7 @@ try {
 
     
     app.get("/", (req, res) => {
-        res.status(200).send("Portfolio Backend is running smoothly.");
+        res.status(200).send("The Portfolio Backend is running smoothly.");
     });
 
     app.get("/health", (req, res) => {
