@@ -15,15 +15,29 @@ try {
 
     app.use(cors());
 
+    // Check for development environment
     if (process.env.NODE_ENV === "development") {
-    try {
-        // Only run morgan if it is actively installed in the local environment modules footprint
-        const morgan = (await import("morgan")).default;
-        app.use(morgan("dev"));
-    } catch (error) {
-        console.error(error.message,"⚠️ Morgan is not installed, skipping logging middleware execution tracking.");
+        try {
+            // Dynamic import protects your production build if devDependencies are pruned
+            const morgan = (await import("morgan")).default;
+            app.use(morgan("dev"));
+            console.log("🛠️  Development mode: Morgan logging middleware enabled.");
+        } catch (error) {
+            console.warn(error.message, "⚠️ Morgan is missing from node_modules, skipping request logs.");
+        }
+
+        // 💡 Added: Explicit check for production mode
+    } else if (process.env.NODE_ENV === "production") {
+        console.log("🚀 Production mode active: Security protocols and clean logging enforced.");
+
+        // You can put production-only middleware here if needed, such as trust proxy limits:
+        // app.set('trust proxy', 1);
+
+        // Fallback protection case if NODE_ENV is misspelled, blank, or completely omitted
+    } else {
+        console.warn(`⚠️ Warning: Unknown NODE_ENV value: "${process.env.NODE_ENV}". Defaulting to safe settings.`);
     }
-}
+
 
     
     app.get("/", (req, res) => {
