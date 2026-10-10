@@ -17,7 +17,7 @@ process.on("unhandledRejection", (reason, promise) => {
 Env_connect();
 
 // Render injects port 10000 automatically, but this catches it seamlessly
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 8080;
 
 const startServer = async () => {
     console.log("Starting backend portfolio boot sequence...");
