@@ -3,9 +3,11 @@ FROM node:24-alpine AS dependencies
 
 WORKDIR /app
 
+# Copies package.json and package-lock.json explicitly
 COPY package*.json ./
 
-RUN npm ci
+# Added the legacy-peer-deps flag to prevent strict npm version mismatch crashes
+RUN npm ci --legacy-peer-deps
 
 # Stage 2: Production Runtime
 FROM node:24-alpine AS runner
@@ -22,4 +24,5 @@ COPY . .
 
 EXPOSE 8080
 
-CMD ["npm", "start"]
+# Optimized: Running node directly ensures Render can boot and shut down the container cleanly
+CMD ["node", "server.js"] 
