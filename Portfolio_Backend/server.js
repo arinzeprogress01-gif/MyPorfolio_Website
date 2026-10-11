@@ -24,8 +24,8 @@ const startServer = async () => {
     
     await Database_connect();
 
-    // Streamlined: Removed "0.0.0.0" to let Render's internal proxy handle the handshake
-    app.listen(PORT, () => {
+    
+    app.listen(PORT,"0.0.0.0", () => {
         console.log(`🚀 Server successfully running on port ${PORT}`);
     });
 };
