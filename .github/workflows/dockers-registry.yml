@@ -26,14 +26,22 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      # This new step extracts the metadata and forces the repository name to lowercase
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}-backend
+          tags: |
+            type=raw,value=latest
+            type=raw,value=${{ github.sha }}
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
           context: ./Portfolio_Backend
           file: ./Portfolio_Backend/Dockerfile
           push: true
-          tags: |
-            ghcr.io/${{ github.repository }}-backend:latest
-            ghcr.io/${{ github.repository }}-backend:${{ github.sha }}
+          tags: ${{ steps.meta.outputs.tags }} # Uses the generated, lowercased tags here
           cache-from: type=gha
           cache-to: type=gha,mode=max
