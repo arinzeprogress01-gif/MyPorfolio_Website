@@ -3,11 +3,11 @@ FROM node:24-alpine AS dependencies
 
 WORKDIR /app
 
-# Copies package.json and package-lock.json explicitly
-COPY package*.json ./
+# Copy package.json over (does not strictly require lockfile to be present)
+COPY package.json ./
 
-# Added the legacy-peer-deps flag to prevent strict npm version mismatch crashes
-RUN npm ci --legacy-peer-deps
+# Swap npm ci for npm install to bypass lockfile tracking requirements
+RUN npm install --omit=dev --legacy-peer-deps
 
 # Stage 2: Production Runtime
 FROM node:24-alpine AS runner
@@ -24,5 +24,4 @@ COPY . .
 
 EXPOSE 8080
 
-# Optimized: Running node directly ensures Render can boot and shut down the container cleanly
-CMD ["node", "server.js"] 
+CMD ["node", "server.js"]
