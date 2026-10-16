@@ -21,7 +21,7 @@ export default function EvidenceSection() {
   const { eyebrow, heading, items } = evidenceContent;
 
   return (
-    <section className="bg-[#05245A] text-white">
+    <section id="why" className="bg-[#05245A] text-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 sm:px-8 md:py-24 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-16 lg:px-12 lg:py-32">
         {/* Left: eyebrow + heading */}
         <div>
