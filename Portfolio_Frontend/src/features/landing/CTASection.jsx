@@ -1,6 +1,6 @@
 import Button from "../../components/ui/Button";
 import { ctaContent } from "./data/cta";
-import { siteConfig } from "./data/site";
+import { siteConfig } from "../../components/data/site";
 
 function ArrowIcon() {
   return (

@@ -5,6 +5,7 @@ import Features from './features/landing/Features'
 import DifferentPaths from './features/landing/DifferentPaths'
 import EvidenceSection from './features/landing/EvidenceSection'    
 import CTASection from './features/landing/CTASection'    
+import Footer from './components/layouts/Footer'
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         <EvidenceSection />
         <CTASection />
       </main>
+      <Footer />
     </div>
   )
 }
