@@ -3,6 +3,7 @@ import Hero from './features/landing/Hero'
 import ProfessionsStrip from './features/landing/ProfessionsStrip'
 import Features from './features/landing/Features'
 import DifferentPaths from './features/landing/DifferentPaths'
+import EvidenceSection from './features/landing/EvidenceSection'
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
         <ProfessionsStrip />
         <Features />
         <DifferentPaths />
+        <EvidenceSection />
       </main>
     </div>
   )
