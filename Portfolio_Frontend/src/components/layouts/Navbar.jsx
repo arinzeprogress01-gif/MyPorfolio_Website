@@ -7,7 +7,7 @@ const links = [
   { label: 'Features', href: '#features' },
   { label: 'Example', href: '#example' },
   { label: 'For professionals', href: '#professionals' },
-  { label: 'Why FolioX', href: '#why' },
+  { label: 'Why FolioPro', href: '#why' },
 ]
 
 export default function Navbar() {
@@ -19,7 +19,7 @@ export default function Navbar() {
       <Container xl>
         <nav className="flex h-16 items-center justify-between" aria-label="Main">
           <a href="#top" className="font-display text-lg font-extrabold tracking-tight text-primary">
-            FolioX
+            FolioPro
           </a>
 
           {/* Desktop links */}

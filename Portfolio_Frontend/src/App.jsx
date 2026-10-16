@@ -3,7 +3,8 @@ import Hero from './features/landing/Hero'
 import ProfessionsStrip from './features/landing/ProfessionsStrip'
 import Features from './features/landing/Features'
 import DifferentPaths from './features/landing/DifferentPaths'
-import EvidenceSection from './features/landing/EvidenceSection'
+import EvidenceSection from './features/landing/EvidenceSection'    
+import CTASection from './features/landing/CTASection'    
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
         <Features />
         <DifferentPaths />
         <EvidenceSection />
+        <CTASection />
       </main>
     </div>
   )
