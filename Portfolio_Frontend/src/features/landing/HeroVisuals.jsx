@@ -14,7 +14,7 @@ export default function HeroVisual() {
       <div className="">
         <img
           src={heroImage}
-          alt="Preview of a FolioX professional portfolio"
+          alt="Preview of a FolioPro professional portfolio"
           className="h-auto w-full rounded-2xl border border-border shadow-premium"
           fetchPriority="high"
           decoding="async"

@@ -17,7 +17,7 @@ export default function DifferentPaths() {
             </h2>
             <p className="mt-6 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg">
               Whether you build, teach, create, write, research, advise, or lead,
-              FolioX gives your work the context it deserves.
+              FolioPro gives your work the context it deserves.
             </p>
             <Button as="a" href="#start" variant="primary" size="lg" className="mt-8">
               Create your portfolio
